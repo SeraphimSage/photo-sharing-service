@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
-  title: Photo Sharing Service
   version: "1.0.0"
+  title: "Photo Sharing Service"
 servers:
   - url: http://localhost:3000/api
     description: localhost
@@ -11,3 +11,63 @@ servers:
       domain:
         default: localhost:3000
         description: Domain
+tags:
+  - name: "photo"
+    description: "Show off all your best pictures"
+    externalDocs:
+      description: "Find out more"
+      url: "http://swagger.io"
+paths:
+  /photo:
+    get:
+      tags:
+        - "photo"
+      summary: "Find picture by ID"
+      description: "Returns a single picture"
+      operationId: "getPicturetById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "petId"
+          in: "path"
+          description: "ID of pet to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Pet"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Pet not found"
+      security:
+        - api_key: []
+    post:
+      tags:
+        - "photo"
+      summary: "Add a new pet to the store"
+      description: ""
+      operationId: "addPet"
+      consumes:
+        - "application/json"
+        - "application/xml"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Pet"
+      responses:
+        405:
+          description: "Invalid input"
+      security:
+        - petstore_auth:
+            - "write:pets"
+            - "read:pets"
