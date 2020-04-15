@@ -2,11 +2,12 @@ openapi: "3.0.1"
 info:
   version: "1.0.0"
   title: "Photo Sharing Service"
+  description: "For the photo lover in us all!"
 servers:
-  - url: http://localhost:3000/api
-    description: localhost
-  - url: https://{domain}/api
-    description: Production Server
+  - url: "http://localhost:3000/api"
+    description: "localhost"
+  - url: "https://{domain}/api"
+    description: "Production Server"
     variables:
       domain:
         default: localhost:3000
@@ -20,54 +21,45 @@ tags:
 paths:
   /photo:
     get:
-      tags:
-        - "photo"
-      summary: "Find picture by ID"
+      summary: "Fetch a single photo"
       description: "Returns a single picture"
-      operationId: "getPicturetById"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "pictureId"
-          in: "path"
-          description: "ID of picture to return"
-          required: true
-          type: "integer"
-          format: "int64"
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/picture"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Picture not found"
-      security:
-        - api_key: []
+        418:
+          description: "Photo accepted"
     post:
-      tags:
-        - "photo"
       summary: "Add a new picture to the store"
       description: ""
-      operationId: "addpicture"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "picture object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/picture"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                location:
+                  type: "string"
+                  format: "binary"
+                category:
+                  type: "string"
+                  format: "binary"
+              required:
+                - category
       responses:
         200:
-          description: "successful operation"
+          description: OK
+          content:
+            aplication/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      photoRecieved:
+                        type: boolean
+                    required:
+                      - photoRecieved
         405:
           description: "Invalid input"
-      security:
-        - picturestore_auth:
-            - "write:pictures"
-            - "read:pictures"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
