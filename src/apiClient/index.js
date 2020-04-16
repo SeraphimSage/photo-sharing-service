@@ -10,5 +10,8 @@ export const getImage = () => {
 export const postImage = () => {
 	return new Promise((resolution, rejection) => {
 		resolution(postImageResponse);
+		if (!postImageResponse) {
+			rejection("NO IMAGE RESPONSE");
+		}
 	});
 };

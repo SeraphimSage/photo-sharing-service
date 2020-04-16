@@ -4,9 +4,13 @@ import { postImage } from "../apiClient";
 class Home extends React.Component {
 	imageUploader(e) {
 		e.preventDefault();
-		this.client.postImage().then((res) => {
-			console.log(res);
-		});
+		postImage()
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 	render() {
 		return (
